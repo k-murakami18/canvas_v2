@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvassssss</title>
+  <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" />
+  <link rel="stylesheet" media="screen" type="text/css" href="css/colorpicker.css" />
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css">
+  <script src="js/jquery.1.6.4.min.js"></script>
+  <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
+  <script src="js/colorpicker.js"></script>
+  <script type="text/javascript" src="./dist/fabric.js"></script>
+</head>
+
+<body>
+  <!--タイトルとファイル選択-->
+  <div class="title">
+    <div class="title_container" style="width: 450px;height: 60px;">
+      <div style="width:150px; float: left;">
+        <h1 id="title" style="display:inline;">Canvas</h1>
+      </div>
+      <div style="float: right;">
+        <!--ローカル画像ファイルの選択-->
+        <form>
+          <input type="file" id="file" value="selectImage" accept="image/*">
+        </form>
+      </div>
+    </div>
+  </div>
+  <div style="clear:left;"></div>
+
+  <div class="button_container">
+    <input id="select" type="image" src="img/select.png" class="btn-box" title="選択">
+    <input id="draw" type="image" src="img/draw.png" class="btn-box" title="描画">
+    <input id="toSVG" type="image" src="img/save.png" class="btn-box" title="保存">
+    <input id="loadSVG" type="image" src="img/load.png" class="btn-box" title="読み込み">
+    <input id="deleteBtn" type="image" src="img/remove.png" class="btn-box" title="削除">
+    <button id="historyDlt" type="button">履歴削除</button>
+  </div>
+  <div style="clear:left;"></div>
+
+  <!--描画キャンパス-->
+  <div style="float:left;">
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+
+  <div data-simplebar class="history_container" style="float: left;">
+    <p id="title_tmpList" class="title_tmpList">保存履歴</p>
+    <hr>
+    <div id="tmpList" style="height:575px;"></div>
+  </div>
+  <div style="clear:left;"></div>
+  <br>
+
+  <!-- partial -->
+  <script src="./script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js"></script>
+</body>
+</html>

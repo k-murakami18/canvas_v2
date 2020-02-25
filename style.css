@@ -1,0 +1,71 @@
+/*タイトルコンテナ*/
+.title_container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*タイトル*/
+.title{
+  border-radius: 8px;
+  background-color: #bdfffd;
+}
+
+/*ボタンコンテナ*/
+.button_container{
+  width: 290px;
+  border-width: 2px;
+  border-style: dashed;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/*各ボタンの設定*/
+.btn-box{
+  display: inline-block;
+  widows: 25px;
+  height: 25px;
+  margin:0px 15px 0px 0px;
+  border: 1px black solid;
+  padding: 2px;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+#select{
+  margin-left: 15px;
+}
+/*ボタン枠線削除*/
+input:focus {
+	outline:0;
+}
+
+/*キャンバス*/
+canvas {
+	position: relative;
+	border:1px solid #000;
+}
+
+/*保存履歴コンテナ*/
+.history_container{
+  height: 600px;
+  width: 280px;
+  background-color: whitesmoke;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+/*保存履歴タイトル*/
+.title_tmpList{
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  font-weight: bolder;
+}
+
+.tmpImage{
+  border: 1px solid black;
+  margin-left: 5px;
+}
