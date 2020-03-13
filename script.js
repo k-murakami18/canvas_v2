@@ -2,11 +2,12 @@ $(function () {
   var canvas = new fabric.Canvas('canvas');
 
   canvas.isDrawingMode = true;
-  canvas.freeDrawingBrush.color = "blue";
+  canvas.freeDrawingBrush.color = "red";
   canvas.freeDrawingBrush.width = 3;
 
   var group;
   var data;
+  var svg;
   var tmpList = $("#tmpList");
   var prefix = "12345678";
   $("#draw").css("background-color", "#c7c5c7");
@@ -34,27 +35,28 @@ $(function () {
     reader.readAsDataURL(file);
   });
 
-  //ボタンをクリックしたら背景色変更//
+  //各ボタンの背景色変更//
   $(".btn-box").click(function () {
     $(".btn-box").css("background-color", "");
     $(this).css("background-color", "#c7c5c7");
   });
 
+  //選択モード
   document.getElementById('select').addEventListener("click", function () {
     canvas.isDrawingMode = false
   }, false);
 
+  //描画モード
   document.getElementById('draw').addEventListener("click", function () {
     canvas.isDrawingMode = true
   }, false);
 
+  //保存
   document.getElementById('toSVG').addEventListener("click", function () {
-    //グループ化
-    group = canvas.getActiveObject().toGroup();
-    //保存
+    group = canvas.getActiveObject().toGroup();     //グループ化
+    data = group.toSVG();                       //SVGとして保存
     data = group.toDataURL();
-    //グループ化解除
-    canvas.getActiveObject().toActiveSelection();
+    canvas.getActiveObject().toActiveSelection();   //グループ化解除
 
     for (var i = 1; i <= 100; i++) {
       if (!window.localStorage.getItem(prefix + "tmpData" + i)) {
@@ -71,30 +73,13 @@ $(function () {
     canvas.requestRenderAll();
   }, false);
 
-  document.getElementById('deleteBtn').addEventListener("click", function deleteBtn() {
-    //選択されているオブジェクトを削除する
-    if (canvas.getActiveObjects() != null) {
-      canvas.getActiveObjects().forEach(obj => {
-        //対象オブジェクトを削除
-        canvas.remove(obj);
-        //矩形のIDとcanvas.item紐づけ用配列も削除する。
-        let arrIndex = arrayRect.indexOf(obj.id);
-        arrayRect.splice(arrIndex, 1);
-      });
-    }
-  }, false);
-
-  document.getElementById('historyDlt').addEventListener("click", function deleteBtn() {
-    window.localStorage.clear();
-  }, false);
-
   //履歴表示
   var loadTmpList = function () {
     tmpList.get(0).innerHTML = "";
     var timer = null;
     if (window.localStorage) {
       for (var i = 1; i <= 100; i++) {
-        var data = window.localStorage.getItem(prefix + "tmpData" + i);
+        data = window.localStorage.getItem(prefix + "tmpData" + i);
         if (data) {
           var image = new Image();
           image.src = data;
@@ -111,7 +96,7 @@ $(function () {
               if (confirm("削除しますか？")) {
                 window.localStorage.removeItem(prefix + "tmpData" + img.index);
                 for (var i = (img.index + 1); i <= 100; i++) {
-                  var data = window.localStorage.getItem(prefix + "tmpData" + i);
+                  data = window.localStorage.getItem(prefix + "tmpData" + i);
                   window.localStorage.removeItem(prefix + "tmpData" + i);
                   if (!data) {
                     break;
@@ -124,8 +109,11 @@ $(function () {
           }
           image.onmouseup = function () {
             clearTimeout(timer);
-            var ctx = canvas.getContext('2d');
-            ctx.drawImage(this, 0, 0);
+            fabric.loadSVGFromString(svg, function (objects, options) {
+              var obj = fabric.util.groupSVGElements(objects, options);
+              canvas.add(obj);
+              canvas.renderAll();
+            });
           }
         }
       }
@@ -138,6 +126,26 @@ $(function () {
       var obj = fabric.util.groupSVGElements(objects, options);
       canvas.add(obj).renderAll();
     });
+  }, false);
+
+  //選択箇所削除
+  document.getElementById('deleteBtn').addEventListener("click", function deleteBtn() {
+    var activeObjects = canvas.getActiveObjects();
+    canvas.discardActiveObject()
+    if (activeObjects.length) {
+      canvas.remove.apply(canvas, activeObjects);
+    }
+  }, false);
+
+  //履歴削除
+  document.getElementById('historyDlt').addEventListener("click", function deleteBtn() {
+    window.localStorage.clear();
+    loadTmpList();
+  }, false);
+
+  //キャンバスクリア
+  document.getElementById('canvasDlt').addEventListener("click", function () {
+    canvas.clear();
   }, false);
 
   //tmpListのスクロール化

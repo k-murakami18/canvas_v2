@@ -13,7 +13,7 @@
 
 /*ボタンコンテナ*/
 .button_container{
-  width: 290px;
+  width: 400px;
   border-width: 2px;
   border-style: dashed;
   border-radius: 5px;
@@ -58,7 +58,7 @@ canvas {
 }
 
 /*保存履歴タイトル*/
-.title_tmpList{
+#title_tmpList{
   margin-top: 5px;
   margin-left: 10px;
   margin-bottom: 0px;
