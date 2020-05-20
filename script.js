@@ -7,7 +7,6 @@ $(function () {
 
   var group;
   var data;
-  var svg;
   var tmpList = $("#tmpList");
   var prefix = "12345678";
   $("#draw").css("background-color", "#c7c5c7");
@@ -53,10 +52,10 @@ $(function () {
 
   //保存
   document.getElementById('toSVG').addEventListener("click", function () {
-    group = canvas.getActiveObject().toGroup();     //グループ化
-    data = group.toSVG();                       //SVGとして保存
+    group = canvas.getActiveObject().toGroup();
     data = group.toDataURL();
-    canvas.getActiveObject().toActiveSelection();   //グループ化解除
+    canvas.getActiveObject().toActiveSelection();
+
 
     for (var i = 1; i <= 100; i++) {
       if (!window.localStorage.getItem(prefix + "tmpData" + i)) {
@@ -81,6 +80,9 @@ $(function () {
       for (var i = 1; i <= 100; i++) {
         data = window.localStorage.getItem(prefix + "tmpData" + i);
         if (data) {
+
+          console.log(data);
+
           var image = new Image();
           image.src = data;
           image.index = i;
@@ -109,7 +111,7 @@ $(function () {
           }
           image.onmouseup = function () {
             clearTimeout(timer);
-            fabric.loadSVGFromString(svg, function (objects, options) {
+            fabric.loadSVGFromString(data, function (objects, options) {
               var obj = fabric.util.groupSVGElements(objects, options);
               canvas.add(obj);
               canvas.renderAll();

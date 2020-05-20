@@ -57,6 +57,12 @@ canvas {
   margin-left: 10px;
 }
 
+.viewpanel{
+  height: 545px;
+  width: 280px;
+  background-color: whitesmoke;
+}
+
 /*保存履歴タイトル*/
 #title_tmpList{
   margin-top: 5px;

@@ -46,15 +46,16 @@
     <canvas id="canvas" width="800" height="600"></canvas>
   </div>
 
-  <div data-simplebar class="history_container" style="float: left;">
+  <div class="history_container" style="float: left;">
     <p id="title_tmpList">保存履歴</p>
     <hr>
-    <div id="tmpList" style="height:575px;"></div>
+    <div data-simplebar class="viewpanel">
+      <div id="tmpList" style="height:575px;"></div>
+    </div>
   </div>
   <div style="clear:left;"></div>
   <br>
 
-  <!-- partial -->
   <script src="./script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js"></script>
 </body>
