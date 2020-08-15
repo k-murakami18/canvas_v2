@@ -2,23 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Canvas</title>
+  <title>添削支援システム</title>
   <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" />
-  <link rel="stylesheet" media="screen" type="text/css" href="css/colorpicker.css" />
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css">
   <script src="js/jquery.1.6.4.min.js"></script>
   <script src="js/jquery-ui-1.8.16.custom.min.js"></script>
-  <script src="js/colorpicker.js"></script>
   <script type="text/javascript" src="./dist/fabric.js"></script>
+  <script type="text/javascript" src="./dist/fabric.min.js"></script>
 </head>
 
 <body>
   <!--タイトルとファイル選択-->
   <div class="title">
-    <div class="title_container" style="width: 450px;height: 60px;">
-      <div style="width:150px; float: left;">
-        <h1 id="title" style="display:inline;">Canvas</h1>
+    <div class="title_container">
+      <div style="width:500px; float: left;">
+        <h1 id="title" style="display:inline;">添削支援システム</h1>
       </div>
       <div style="float: right;">
         <!--ローカル画像ファイルの選択-->
@@ -30,31 +29,36 @@
   </div>
   <div style="clear:left;"></div>
 
-  <div class="button_container">
-    <input id="select" type="image" src="img/select.png" class="btn-box" title="選択">
-    <input id="draw" type="image" src="img/draw.png" class="btn-box" title="描画">
-    <input id="toSVG" type="image" src="img/save.png" class="btn-box" title="保存">
-    <input id="loadSVG" type="image" src="img/load.png" class="btn-box" title="読み込み">
-    <input id="deleteBtn" type="image" src="img/remove.png" class="btn-box" title="削除">
-    <input id="historyDlt" type="image" src="img/history.png" class="btn-box" title="履歴削除">
-    <input id="canvasDlt" type="image" src="img/canvasDlt.png" class="btn-box" title="キャンバスクリア">
+  <!--ボタンエリア-->
+  <div class="button_container" style="float: left;">
+    <input id="select" type="image" src="img/select.png" class="btn-box" title="選択モード">
+    <input id="draw" type="image" src="img/draw.png" class="btn-box" title="描画モード">
+    <input id="draw_save" type="image" src="img/draw_save.png" class="btn_box" title="保存履歴に表示">
+    <input id="draw_dlt" type="image" src="img/draw_dlt.png" class="btn_box" title="削除">
+    <input id="history_dlt" type="image" src="img/history_dlt.png" class="btn_box" title="保存履歴の削除">
+    <input id="canvas_dlt" type="image" src="img/canvas_dlt.png" class="btn_box" title="キャンバスクリア">
+    <input id="canvas_save" type="image" src="img/canvas_save.png" class="btn_box" title="キャンバスの保存">
+    <li class="setColor btn-box" style="background-color:red;"></li>
+    <li class="setColor btn_box" style="background-color:blue;"></li>
+    <li class="setColor btn_box" style="background-color:black;"></li>
+    <a id="download_link"></a>
   </div>
-  <div style="clear:left;"></div>
 
   <!--描画キャンパス-->
   <div style="float:left;">
     <canvas id="canvas" width="800" height="600"></canvas>
   </div>
 
+  <!--保存履歴-->
   <div class="history_container" style="float: left;">
     <p id="title_tmpList">保存履歴</p>
     <hr>
     <div data-simplebar class="viewpanel">
-      <div id="tmpList" style="height:575px;"></div>
+      <div id="tmpList" style="height:575px;">
+      </div>
     </div>
   </div>
   <div style="clear:left;"></div>
-  <br>
 
   <script src="./script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js"></script>

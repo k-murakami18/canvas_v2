@@ -1,5 +1,7 @@
 /*タイトルコンテナ*/
 .title_container{
+  width: 550px;
+  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,34 +9,30 @@
 
 /*タイトル*/
 .title{
-  border-radius: 8px;
-  background-color: #bdfffd;
+  background-color: #A7A7A7;
+  padding-left: 20px;
+  margin-bottom: 5px;
 }
 
 /*ボタンコンテナ*/
 .button_container{
-  width: 400px;
-  border-width: 2px;
-  border-style: dashed;
-  border-radius: 5px;
-  margin-top: 10px;
+  width: 50px;
+  height: 602px;
+  background-color: #DADADA;
   margin-bottom: 5px;
+  margin-right: 5px;
 }
 
 /*各ボタンの設定*/
-.btn-box{
+.btn-box,.btn_box{
   display: inline-block;
   widows: 25px;
   height: 25px;
-  margin:0px 15px 0px 0px;
   border: 1px black solid;
   padding: 2px;
   border-radius: 5px;
-  margin-top: 5px;
-  margin-left: 5px;
-}
-#select{
-  margin-left: 15px;
+  margin-top: 10px;
+  margin-left: 9px;
 }
 /*ボタン枠線削除*/
 input:focus {
@@ -53,7 +51,6 @@ canvas {
   width: 280px;
   background-color: whitesmoke;
   border: 1px solid black;
-  border-radius: 5px;
   margin-left: 10px;
 }
 
@@ -74,4 +71,11 @@ canvas {
 .tmpImage{
   border: 1px solid black;
   margin-left: 5px;
+}
+
+li{
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border:1px solid #000;
 }

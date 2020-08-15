@@ -1,6 +1,5 @@
 $(function () {
   var canvas = new fabric.Canvas('canvas');
-
   canvas.isDrawingMode = true;
   canvas.freeDrawingBrush.color = "red";
   canvas.freeDrawingBrush.width = 3;
@@ -9,14 +8,15 @@ $(function () {
   var data;
   var tmpList = $("#tmpList");
   var prefix = "12345678";
-  $("#draw").css("background-color", "#c7c5c7");
+  var canvas_save = document.getElementById('canvas');
+  var downloadLink = document.getElementById('download_link');
+  var filename = 'download.png';
 
+  //背景表示
   document.getElementById('file').addEventListener("change", function (e) {
     var file = e.target.files[0];
     var reader = new FileReader();
     reader.onload = function (f) {
-      //var ctx = canvas.get(0).getContext("2d");
-      //ctx.clearRect(0, 0, 800, 600);
       var data = f.target.result;
       fabric.Image.fromURL(data, function (img) {
         var oImg = img.set({ left: 0, top: 0, angle: 00 }).scale(1);
@@ -28,6 +28,7 @@ $(function () {
         oImg.set({
           selectable: false    // 選択させない
         });
+        canvas.clear();
         canvas.add(oImg).renderAll();
       });
     };
@@ -35,6 +36,7 @@ $(function () {
   });
 
   //各ボタンの背景色変更//
+  $("#draw").css("background-color", "#c7c5c7");
   $(".btn-box").click(function () {
     $(".btn-box").css("background-color", "");
     $(this).css("background-color", "#c7c5c7");
@@ -43,6 +45,7 @@ $(function () {
   //選択モード
   document.getElementById('select').addEventListener("click", function () {
     canvas.isDrawingMode = false
+    console.log(getActiveObject.width)
   }, false);
 
   //描画モード
@@ -50,12 +53,11 @@ $(function () {
     canvas.isDrawingMode = true
   }, false);
 
-  //保存
-  document.getElementById('toSVG').addEventListener("click", function () {
-    group = canvas.getActiveObject().toGroup();
+  //選択箇所保存
+  document.getElementById('draw_save').addEventListener("click", function () {
+    group = canvas.getActiveObject()
     data = group.toDataURL();
-    canvas.getActiveObject().toActiveSelection();
-
+    //canvas.getActiveObject().toActiveSelection();
 
     for (var i = 1; i <= 100; i++) {
       if (!window.localStorage.getItem(prefix + "tmpData" + i)) {
@@ -80,9 +82,6 @@ $(function () {
       for (var i = 1; i <= 100; i++) {
         data = window.localStorage.getItem(prefix + "tmpData" + i);
         if (data) {
-
-          console.log(data);
-
           var image = new Image();
           image.src = data;
           image.index = i;
@@ -92,7 +91,8 @@ $(function () {
             this.className = "tmpImage";
             tmpList.get(0).appendChild(this);
           };
-          image.onmousedown = function () {
+          //履歴を1秒クリックした時選択した履歴を削除
+          image.onpointerdown = function () {
             var img = this;
             timer = setTimeout(function () {
               if (confirm("削除しますか？")) {
@@ -109,12 +109,14 @@ $(function () {
               }
             }, 1000);
           }
-          image.onmouseup = function () {
+          //履歴をクリックした時キャンバスに描画
+          image.onpointerup = function () {
+            var img = this.src;
             clearTimeout(timer);
-            fabric.loadSVGFromString(data, function (objects, options) {
-              var obj = fabric.util.groupSVGElements(objects, options);
-              canvas.add(obj);
-              canvas.renderAll();
+            fabric.Image.fromURL(img, function (oImg) {
+              oImg.scale(1);
+              canvas.add(oImg);
+              i = i + 100;
             });
           }
         }
@@ -123,15 +125,8 @@ $(function () {
   }
   loadTmpList();
 
-  document.getElementById('loadSVG').addEventListener("click", function loadSVG() {
-    fabric.loadSVGFromString(data, function (objects, options) {
-      var obj = fabric.util.groupSVGElements(objects, options);
-      canvas.add(obj).renderAll();
-    });
-  }, false);
-
   //選択箇所削除
-  document.getElementById('deleteBtn').addEventListener("click", function deleteBtn() {
+  document.getElementById('draw_dlt').addEventListener("click", function deleteBtn() {
     var activeObjects = canvas.getActiveObjects();
     canvas.discardActiveObject()
     if (activeObjects.length) {
@@ -140,19 +135,40 @@ $(function () {
   }, false);
 
   //履歴削除
-  document.getElementById('historyDlt').addEventListener("click", function deleteBtn() {
-    window.localStorage.clear();
-    loadTmpList();
+  document.getElementById('history_dlt').addEventListener("click", function deleteBtn() {
+    if (confirm("保存履歴を削除しますか？")) {
+      window.localStorage.clear();
+      loadTmpList();
+    }
   }, false);
 
   //キャンバスクリア
-  document.getElementById('canvasDlt').addEventListener("click", function () {
+  document.getElementById('canvas_dlt').addEventListener("click", function () {
     canvas.clear();
   }, false);
+
+  //キャンバス全体を保存
+  document.getElementById('canvas_save').addEventListener('click', function () {
+    if (canvas_save.msToBlob) {
+      var blob = canvas_save.msToBlob();
+      window.navigator.msSaveBlob(blob, filename);
+    } else {
+      downloadLink.href = canvas_save.toDataURL('image/png');
+      downloadLink.download = filename;
+      downloadLink.click();
+    }
+  });
+
+  //色の変更
+  document.getElementByClassName('setColor').addEventListener('click', function () {
+    canvas.freeDrawingBrush.color = $(this).css('background-color');
+    $(".setColor").css("border-width", "");
+    $(this).css("border-width", "3px");
+  });
+
 
   //tmpListのスクロール化
   document.getElementById('myElement'), {
     autoHide: false
   };
-
 });
